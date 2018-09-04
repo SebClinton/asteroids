@@ -1,6 +1,3 @@
-
-
-
 function Asteroid(segments, radius, noise) {
     this.x = context.canvas.width * Math.random();
     this.y = context.canvas.height * Math.random();
@@ -15,4 +12,3 @@ function Asteroid(segments, radius, noise) {
         this.shape.push(Math.random() - 0.5);
     }
 }
-

@@ -1,9 +1,10 @@
-!doctype html>
+<!doctype html>
 <html>
 <head>
     <title>animating asteroids</title> 
     <link rel="stylesheet" href="styles.css">
     <script src="drawing.js"></script>
+    <script src="object.js"></script>
 </head>
 <body>
 <h1>animation</h1>  
@@ -11,23 +12,6 @@
 <script>
 var context = document.getElementById("asteroids").
 getContext("2d");
-
-var asteroid = {
-    segments: 24,
-    shape: [],
-    radius: 50,
-    noise: 0.5,
-    x: context.canvas.width * Math.random(),
-    y: context.canvas.height * Math.random(),
-    angle: 0,
-    x_speed: context.canvas.width * (Math.random() - 0.5),
-    y_speed: context.canvas.height * (Math.random() - 0.5),
-    rotation_speed: 2 * Math.PI * (Math.random() - 0.5)
-};
-
-for(var i = 0; i < asteroid.segments; i++) {
-    asteroid.shape.push(Math.random() - 0.5);
-}
 
 function draw(ctx, guide) {
     if(guide) {
@@ -43,16 +27,18 @@ draw_asteroid(ctx, asteroid.radius, asteroid.shape, {
 ctx.restore();
 }
 
+var asteroid = new Asteroid(24, 50, 0.2)
+
 function update(elapsed) {
-    if(x - radius + elapsed * x_speed > context.canvas.width) 
-    {x = -radius;}
-    if(x + radius + elapsed * x_speed < 0) {x = context.canvas.width + radius;}
-    if(y - radius + elapsed * y_speed > context.canvas.height)
-    {y = -radius;}
-    if(y + radius + elapsed * y_speed < 0) {y = context.canvas.height + radius;}
-    x += elapsed * x_speed;
-    y += elapsed * y_speed;
-    angle = (angle + elapsed * rotation_speed) % (2 * Math.PI);
+    if(asteroid.x - asteroid.radius + elapsed * asteroid.x_speed > context.canvas.width) 
+    {asteroid.x = -asteroid.radius;}
+    if(asteroid.x + asteroid.radius + elapsed * asteroid.x_speed < 0) {asteroid.x = context.canvas.width + asteroid.radius;}
+    if(asteroid.y - asteroid.radius + elapsed * asteroid.y_speed > context.canvas.height)
+    {asteroid.y = -asteroid.radius;}
+    if(asteroid.y + asteroid.radius + elapsed * asteroid.y_speed < 0) {asteroid.y = context.canvas.height + asteroid.radius;}
+    asteroid.x += elapsed * asteroid.x_speed;
+    asteroid.y += elapsed * asteroid.y_speed;
+    asteroid.angle = (asteroid.angle + elapsed * asteroid.rotation_speed) % (2 * Math.PI);
 }
 
 var previous, elapsed;

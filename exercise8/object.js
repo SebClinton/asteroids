@@ -84,7 +84,6 @@ Pacman.prototype.turn_right = function() {
 
 Pacman.prototype.update = function(elapsed, width, height) {
     if(Math.random() <= 0.01) {
-        
         if(Math.random() < 0.5) {
             this.turn_left();
         } else {
@@ -108,4 +107,29 @@ this.x += this.x_speed * elapsed;
 this.y += this.y_speed * elapsed;
 this.time += elapsed;
 this.mouth = Math.abs(Math.sin(2 * Math.PI * this.time));
+}
+
+function Ghost(x, y, radius, speed, colour) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.speed = speed;
+    this.colour = colour;
+}
+
+Ghost.prototype.draw = function(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    draw_ghost(ctx, this.radius, {
+        fill: this.colour
+    });
+    ctx.restore();
+}
+
+Ghost.prototype.update = function(target, elapsed) {
+    var angle = Math.atan2(target.y - this.y, target.x - this.x);
+    var x_speed = Math.cos(angle) * this.speed;
+    var y_speed = Math.sin(angle) * this.speed;
+    this.x += x_speed * elapsed;
+    this.y += y_speed * elapsed;
 }

@@ -14,14 +14,27 @@
     <script>
         var context = document.getElementById("Pacman").
         getContext("2d");
-        Pacman = new Pacman(150, 150, 20, 120);
+        pacman = new Pacman(150, 150, 20, 120);
+
+        let ghosts = [
+            new Ghost(Math.random() * 300, Math.random() * 300, 20, 70, 'red'),
+            new Ghost(Math.random() * 300, Math.random() * 300, 20, 60, 'pink'),
+            new Ghost(Math.random() * 300, Math.random() * 300, 20, 50, 'cyan'),
+            new Ghost(Math.random() * 300, Math.random() * 300, 20, 40, 'orange'),
+        ]
 
         function draw(ctx, guide) {
-            Pacman.draw(ctx);
+            pacman.draw(ctx);
+            ghosts.forEach(function(ghost) {
+                ghost.draw(context, guide);
+            });
         }
 
         function update(elapsed) {
-            Pacman.update(elapsed, 300, 300);
+            pacman.update(elapsed, 300, 300);
+            ghosts.forEach(function(ghost) {
+                ghost.update(pacman, elapsed);
+            });
         }
 
         var previous, elapsed;

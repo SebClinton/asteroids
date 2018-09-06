@@ -146,4 +146,28 @@ function draw_asteroid(ctx, radius, shape, options) {
     }
     ctx.restore();
 }
-        
+     
+function draw_ghost(ctx, radius, options) {
+    options = options || {}
+    var feet = options.feet || 4;
+    var head_radius = radius * 0.8;
+    var foot_radius = head_radius / feet;
+    ctx.save();
+    ctx.strokeStyle = options.stroke || "white";
+    ctx.fillStyle = options.fill || "red";
+    ctx.lineWidth || radius * 0.5;
+    ctx.beginPath();
+    for(foot = 0; foot < feet; foot++) {
+        ctx.arc(
+            (2 * foot_radius * (feet - foot)) - head_radius - foot_radius,
+            radius - foot_radius,
+            foot_radius, 0, Math.PI
+        );
+    }
+    ctx.lineTo(-head_radius, radius - foot_radius);
+    ctx.arc(0, head_radius - radius, head_radius, Math.PI, 2 * Math.PI);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+}

@@ -23,7 +23,7 @@ Asteroid.prototype.update = function(elapsed) {
     if(this.y - this.radius + elapsed * this.y_speed > context.canvas.height) {
         this.y = -this.radius;
     }
-    if(this.y - this.radius + elapsed * this.y_speed < 0) {
+    if(this.y + this.radius + elapsed * this.y_speed < 0) {
         this.y = context.canvas.height + this.radius;
     }
     this.x += elapsed * this.x_speed;

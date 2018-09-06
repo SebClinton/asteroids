@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Animation</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="drawing.js"></script>
+    <script src="object.js"></script>
+</head>
+
+<body>
+    <h1>animation</h1>
+    <canvas id="Pacman" width="300" height="300"></canvas>
+    <script>
+        var context = document.getElementById("Pacman").
+        getContext("2d");
+        Pacman = new Pacman(150, 150, 20, 120);
+
+        function draw(ctx, guide) {
+            Pacman.draw(ctx);
+        }
+
+        function update(elapsed) {
+            Pacman.update(elapsed, 300, 300);
+        }
+
+        var previous, elapsed;
+
+    function frame(timestamp) {
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        if (!previous) previous = timestamp;
+        elapsed = timestamp - previous;
+        update(elapsed / 1000);
+        draw(context, true);
+        previous = timestamp;
+        window.requestAnimationFrame(frame);
+     }
+     window.requestAnimationFrame(frame);
+    </script>
+  </body>
+</html>

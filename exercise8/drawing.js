@@ -152,6 +152,12 @@ function draw_ghost(ctx, radius, options) {
     var feet = options.feet || 4;
     var head_radius = radius * 0.8;
     var foot_radius = head_radius / feet;
+    var eye_radius = head_radius / 2.5;
+    var pupil_radius = eye_radius / 4;
+
+    var left_eye_centre_x = head_radius / 3;
+    var left_eye_centre_y = head_radius * 0.4;
+
     ctx.save();
     ctx.strokeStyle = options.stroke || "white";
     ctx.fillStyle = options.fill || "red";
@@ -166,6 +172,13 @@ function draw_ghost(ctx, radius, options) {
     }
     ctx.lineTo(-head_radius, radius - foot_radius);
     ctx.arc(0, head_radius - radius, head_radius, Math.PI, 2 * Math.PI);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.strokeStyle = "white";
+    ctx.fillStyle = "white";
+    ctx.arc(left_eye_centre_x, left_eye_centre_y, eye_radius, 0, 2 * Math.PI);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();

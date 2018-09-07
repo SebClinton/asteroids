@@ -197,8 +197,6 @@ function draw_ghost(ctx, radius, options) {
     ctx.fill();
     ctx.stroke();
     ctx.beginPath();
-    ctx.strokeStyle = "black";
-    ctx.fillStyle = "black"
     ctx.arc(left_eye_centre_x, left_eye_centre_y, pupil_radius, 0, 2 * Math.PI);
     ctx.closePath();
     ctx.fill();

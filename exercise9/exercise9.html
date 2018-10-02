@@ -13,33 +13,31 @@
     <canvas id="asteroids" width="600" height="600"></canvas>
     <script>
         'use strict';
-        var context = document.getElementById("asteroids").
-        getContext("2d");
+        var context = document.getElementById("asteroids").getContext("2d");
 
-        var mass = new Mass(context.canvas.width/2, context.canvas.height/2, 10, 20);
+        var asteroid = new Asteroid(
+            10000,
+            Math.random() * context.canvas.width,
+            Math.random() * context.canvas.height
+        );
 
         function draw(ctx) {
-            draw_grid(context);
+            draw_grid(ctx);
+            asteroid.draw(ctx, true);
         }
 
-        function draw() {
-            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-            draw_grid(context);
-            mass.draw(context);
+        function update(elapsed, ctx) {
+            asteroid.update(elapsed, ctx);
         }
 
-        function update(elapsed) {
-            mass.update(elapsed, context);
-        }
-
-         var previous, elapsed;
+        var previous, elapsed;
 
         function frame(timestamp) {
             context.clearRect(0, 0, context.canvas.width, context.canvas.height);
             if (!previous) previous = timestamp;
             elapsed = timestamp - previous;
-            update(elapsed / 1000);
-            draw();
+            update(elapsed / 1000, context);
+            draw(context);
             previous = timestamp;
             window.requestAnimationFrame(frame);
         }

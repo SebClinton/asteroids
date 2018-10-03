@@ -14,7 +14,7 @@ function Asteroid(mass, x, y, x_speed, y_speed, rotation_speed) {
     this.segments = Math.min(25, Math.max(5, this.segments));
     this.noise = 0.2;
     this.shape = [];
-    for(var i = 0; i < this.segments; i++) {
+    for (var i = 0; i < this.segments; i++) {
         this.shape.push(2 * (Math.random() - 0.5));
     }
 }
@@ -24,7 +24,7 @@ Asteroid.prototype.draw = function (ctx, guide) {
     ctx.save();
     ctx.translate(this.x, this.y);
     ctx.rotate(this.angle);
-    draw_asteroid(ctx, this.radius, this.shape, {        
+    draw_asteroid(ctx, this.radius, this.shape, {
         noise: this.noise,
         guide: guide
     });
@@ -43,7 +43,7 @@ function Mass(mass, radius, x, y, angle, x_speed, y_speed, rotation_speed) {
     this.rotation_speed = rotation_speed || 0;
 }
 
-Mass.prototype.update = function(elapsed, ctx) {
+Mass.prototype.update = function (elapsed, ctx) {
     this.x += this.x_speed * elapsed;
     this.y += this.y_speed * elapsed;
     this.angle += this.rotation_speed * elapsed;
@@ -63,31 +63,49 @@ Mass.prototype.update = function(elapsed, ctx) {
     }
 }
 
-Mass.prototype.push = function(angle, force, elapsed) {
+Mass.prototype.push = function (angle, force, elapsed) {
     this.x_speed += elapsed * (Math.cos(angle) * force) / this.mass;
     this.y_speed += elapsed * (Math.sin(angle) * force) / this.mass;
 }
 
-Mass.prototype.twist = function(force, elapsed) {
+Mass.prototype.twist = function (force, elapsed) {
     this.rotation_speed += elapsed * force / this.mass;
 }
 
-Mass.prototype.speed = function() {
+Mass.prototype.speed = function () {
     return Math.sqrt(Math.pow(this.x_speed, 2) + Math.pow(this.y_speed, 2));
 }
 
-Mass.prototype.movement_angle = function() {
+Mass.prototype.movement_angle = function () {
     return Math.atan2(this.y_speed, this.x_speed);
 }
 
-Mass.prototype.draw = function(c) {
+Mass.prototype.draw = function (c) {
     c.save();
     c.translate(this.x, this.y);
     c.rotate(this.angle);
     c.beginPath();
-    c.arc(0,0, this.radius, 0, 2 * Math.PI);
+    c.arc(0, 0, this.radius, 0, 2 * Math.PI);
     c.lineTo(0, 0);
     c.strokeStyle = "#FFFFFF";
     c.stroke();
+    c.restore();
+}
+
+function Ship(x, y) {
+    this.super(10, 20, x, y, 1.5 * Math.PI);
+}
+extend(Ship, Mass);
+
+Ship.prototype.draw = function (c, guide) {
+    c.save();
+    c.translate(this.x, this.y);
+    c.rotate(this.angle);
+    c.strokeStyle = "white";
+    c.lineWidth = 2;
+    c.fillStyle = "black";
+    draw_ship(c, this.radius, {
+        guide: guide
+    });
     c.restore();
 }

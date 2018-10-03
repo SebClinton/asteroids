@@ -15,19 +15,25 @@
         'use strict';
         var context = document.getElementById("asteroids").getContext("2d");
 
-        var asteroid = new Asteroid(
-            10000,
-            Math.random() * context.canvas.width,
-            Math.random() * context.canvas.height
-        );
+        var asteroids = [
+            new Asteroid(10000, Math.random() * context.canvas.width, Math.random() * context.canvas.height),
+            new Asteroid(10000, Math.random() * context.canvas.width, Math.random() * context.canvas.height),
+            new Asteroid(10000, Math.random() * context.canvas.width, Math.random() * context.canvas.height)
+        ];
+
+
 
         function draw(ctx) {
             draw_grid(ctx);
-            asteroid.draw(ctx, true);
+            asteroids.forEach(function (asteroid) {
+                asteroid.draw(ctx, true);
+            });
         }
 
         function update(elapsed, ctx) {
-            asteroid.update(elapsed, ctx);
+            asteroids.forEach(function (asteroid) {
+                asteroid.update(elapsed, ctx);
+            });
         }
 
         var previous, elapsed;

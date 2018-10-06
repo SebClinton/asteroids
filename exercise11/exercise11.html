@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>inheritence</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="drawing.js"></script>
+    <script src="object.js"></script>
+</head>
+
+<body>
+    <h1>inheritence</h1>
+    <canvas id="asteroids" width="600" height="600" tabindex="1"></canvas>
+    <script>
+        'use strict';
+        var context = document.getElementById("asteroids").getContext("2d");
+
+        var asteroids = [];
+
+        for (let i = 0; i < 3; i++) {
+            let asteroid = new Asteroid(10000, Math.random() * context.canvas.width, Math.random() * context.canvas.height);
+            asteroid.push(Math.random() * 2 * Math.PI, 5000 + Math.random() * 10000, 60);
+            asteroid.twist((Math.random() - 0.5) * 500, 60);
+            asteroids.push(asteroid);
+        };
+        var ship = new Ship(context.canvas.width / 2, context.canvas.height / 2, 1000);
+
+        context.canvas.addEventListener("keydown", function (e) {
+            key_handler(e, true);
+        }, true);
+
+        context.canvas.addEventListener("keyup", function (e) {
+            key_handler(e, false);
+        }, true);
+
+        function draw(ctx) {
+            draw_grid(ctx);
+            ship.draw(ctx, false);
+            asteroids.forEach(function (asteroid) {
+                asteroid.draw(ctx, false);
+            });
+        }
+
+        function update(elapsed, ctx) {
+            asteroids.forEach(function (asteroid) {
+                asteroid.update(elapsed, ctx);
+            });
+            ship.update(elapsed, context);
+        }
+
+        var previous, elapsed;
+
+        function frame(timestamp) {
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+            if (!previous) previous = timestamp;
+            elapsed = timestamp - previous;
+            update(elapsed / 1000, context);
+            draw(context);
+            previous = timestamp;
+            window.requestAnimationFrame(frame);
+        }
+        window.requestAnimationFrame(frame);
+    </script>
+</body>
+
+</html>

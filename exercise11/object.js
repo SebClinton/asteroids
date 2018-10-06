@@ -95,7 +95,10 @@ Mass.prototype.draw = function (c) {
 function Ship(x, y, power) {
     this.super(10, 20, x, y, 1.5 * Math.PI);
     this.thruster_power = power;
+    this.steering_power = power / 20;
     this.thruster_on = false;
+    this.right_thruster = false;
+    this.left_thruster = false;
 }
 extend(Ship, Mass);
 
@@ -112,6 +115,7 @@ Ship.prototype.draw = function (c, guide) {
 
 Ship.prototype.update = function (elapsed) {
     this.push(this.angle, this.thruster_on * this.thruster_power, elapsed);
+    this.twist((this.right_thruster - this.left_thruster) * this.steering_power, elapsed);
     Mass.prototype.update.apply(this, arguments);
 }
 
@@ -122,9 +126,19 @@ function key_handler(e, value) {
         case 38:
             ship.thruster_on = value;
             break;
+        case "ArrowLeft":
+        case 37:
+            ship.left_thruster = value;
+            break;
+        case "ArrowRight":
+        case 39:
+            ship.right_thruster = value;
+            break;
+        case "g":
+        case 71:
+            if (value) guide = !guide;
         default:
             nothing_handled = true;
     }
     if (!nothing_handled) e.preventDefault();
 }
-

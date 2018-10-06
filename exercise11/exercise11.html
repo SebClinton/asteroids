@@ -23,7 +23,7 @@
             asteroid.twist((Math.random() - 0.5) * 500, 60);
             asteroids.push(asteroid);
         };
-        var ship = new Ship(context.canvas.width / 2, context.canvas.height / 2, 1000);
+        var ship = new Ship(context.canvas.width / 2, context.canvas.height / 2, 1500);
 
         context.canvas.addEventListener("keydown", function (e) {
             key_handler(e, true);

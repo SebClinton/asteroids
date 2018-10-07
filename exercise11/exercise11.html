@@ -57,7 +57,7 @@
                 }
             });
             ship.update(elapsed, ctx);
-            if (ship.trigger) {
+            if (ship.trigger && ship.loaded) {
                 projectiles.push(ship.projectile(elapsed));
             }
         }

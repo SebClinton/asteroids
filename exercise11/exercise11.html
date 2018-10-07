@@ -17,13 +17,15 @@
 
         var asteroids = [];
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 1; i++) {
             let asteroid = new Asteroid(10000, Math.random() * context.canvas.width, Math.random() * context.canvas.height);
             asteroid.push(Math.random() * 2 * Math.PI, 5000 + Math.random() * 10000, 60);
             asteroid.twist((Math.random() - 0.5) * 500, 60);
             asteroids.push(asteroid);
         };
-        var ship = new Ship(context.canvas.width / 2, context.canvas.height / 2, 1500);
+        var ship = new Ship(10, 20, context.canvas.width / 2, context.canvas.height / 2, 1500);
+
+        var projectiles = [];
 
         context.canvas.addEventListener("keydown", function (e) {
             key_handler(e, true);
@@ -35,17 +37,29 @@
 
         function draw(ctx) {
             draw_grid(ctx);
-            ship.draw(ctx, false);
+            projectiles.forEach(function (p) {
+                p.draw(ctx);
+            });
             asteroids.forEach(function (asteroid) {
                 asteroid.draw(ctx, false);
             });
+            ship.draw(ctx, false);
         }
 
         function update(elapsed, ctx) {
             asteroids.forEach(function (asteroid) {
                 asteroid.update(elapsed, ctx);
+            });            
+            projectiles.forEach(function (projectile, i, projectiles) {
+                projectile.update(elapsed, ctx);
+                if (projectile.life <= 0) {
+                    projectiles.splice(i, 1);
+                }
             });
-            ship.update(elapsed, context);
+            ship.update(elapsed, ctx);
+            if (ship.trigger) {
+                projectiles.push(ship.projectile(elapsed));
+            }
         }
 
         var previous, elapsed;

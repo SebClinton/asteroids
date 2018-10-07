@@ -103,7 +103,7 @@ function draw_ship(ctx, radius, options) {
         ctx.arc(radius * curve1 - radius, 0, radius / 50, 0, 2 * Math.PI);
         ctx.fill();
     }
-    if(options.thruster) {        
+    if (options.thruster) {
         ctx.strokeStyle = "yellow";
         ctx.fillStyle = "red";
         ctx.lineWidth = 3;
@@ -117,8 +117,20 @@ function draw_ship(ctx, radius, options) {
             Math.sin(Math.PI - angle * 0.8) * radius / 2
         );
         ctx.fill();
-        ctx.stroke();    
+        ctx.stroke();
     }
+    ctx.restore();
+}
+
+function draw_projectile(ctx, radius, lifetime) {
+    ctx.save();
+    ctx.fillStyle = "rgb(100%, 100%, " + (100 * lifetime) + "%)";
+    ctx.strokeStyle = "rgb(100%, 100%, " + (100 * lifetime) + "%)";
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
     ctx.restore();
 }
 

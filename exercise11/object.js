@@ -123,15 +123,21 @@ function key_handler(e, value) {
     var nothing_handled = false;
     switch (e.key || e.keyCode) {
         case "ArrowUp":
+        case "w":
         case 38:
+        case 87:
             ship.thruster_on = value;
             break;
         case "ArrowLeft":
+        case "a":
         case 37:
+        case 65:
             ship.left_thruster = value;
             break;
         case "ArrowRight":
+        case "d":
         case 39:
+        case 68:
             ship.right_thruster = value;
             break;
         case "g":

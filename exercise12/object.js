@@ -119,7 +119,15 @@ Ship.prototype.draw = function (c, guide) {
 
 Ship.prototype.update = function (elapsed, c) {
     this.push(this.angle, this.thruster_on * this.thruster_power, elapsed);
-    this.twist((this.right_thruster - this.left_thruster) * this.steering_power, elapsed);
+    //this.twist((this.right_thruster - this.left_thruster) * this.steering_power, elapsed);
+
+    this.rotation_speed = (this.right_thruster - this.left_thruster) * this.steering_power / 15;    
+
+    if (!this.thruster_on) {
+        if (Math.abs(this.x_speed) > 0) this.x_speed = this.x_speed * 0.99;
+        if (Math.abs(this.y_speed) > 0) this.y_speed = this.y_speed * 0.99;
+    }
+  
     Mass.prototype.update.apply(this, arguments);
     this.loaded =  this.time_until_reloaded === 0;
     if(!this.loaded) {

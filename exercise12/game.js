@@ -20,6 +20,7 @@ var AsteroidsGame = function (id) {
     this.canvas.addEventListener("keydown", this.keyDown.bind(this), true);
     this.canvas.addEventListener("keyup", this.keyUp.bind(this), true);
     window.requestAnimationFrame(this.frame.bind(this));
+    this.health_indicator = new Indicator("health", 5, 5, 100, 10);
 }
 
 AsteroidsGame.prototype.moving_asteroid = function (elapsed) {
@@ -99,6 +100,9 @@ AsteroidsGame.prototype.update = function(elapsed) {
     this.ship.compromised = false;
     this.asteroids.forEach(function(asteroid) {
         asteroid.update(elapsed, this.c);
+        if(collision(asteroid, this.ship)) {
+            this.ship.compromised = true;
+        }
     }, this);
     this.ship.update(elapsed, this.c);
     this.projectiles.forEach(function(p, i, projectiles) {
@@ -127,4 +131,5 @@ AsteroidsGame.prototype.draw = function() {
     this.projectiles.forEach(function(p) {
         p.draw(this.c);
     }, this);
+    this.health_indicator.draw(this.c, this.ship.health, this.ship.max_health);
 }

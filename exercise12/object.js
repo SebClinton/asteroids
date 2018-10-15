@@ -108,7 +108,7 @@ function Ship(mass, radius, x, y, power, weapon_power) {
     this.right_thruster = false;
     this.left_thruster = false;
     this.retro_on = false;
-    this.weapon_power = weapon_power || 200;
+    this.weapon_power = weapon_power || 500;
     this.loaded = false;
     this.weapon_reload_time = 0.25;
     this.time_until_reloaded = this.weapon_reload_time;
@@ -198,7 +198,7 @@ function Projectile(mass, lifetime, x, y, x_speed, y_speed, rotation_speed) {
     var radius = Math.sqrt((mass / density) / Math.PI);
     this.super(mass, radius, x, y, 0, x_speed, y_speed, rotation_speed);
     this.lifetime = lifetime;
-    this.life = 2.5;
+    this.life = 1;
 }
 extend(Projectile, Mass);
 

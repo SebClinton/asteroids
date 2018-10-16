@@ -252,3 +252,25 @@ Indicator.prototype.draw = function(c, max, level) {
     c.fill();
     c.restore();
 }
+
+function NumberIndicator(label, x, y, options) {
+    options = options || {}
+    this.label = label + ": ";
+    this.x = x;
+    this.y = y;
+    this.digits = options.digits || 0;
+    this.pt = options.pt || 10;
+    this.align = options.align || 'end';
+}
+
+NumberIndicator.prototype.draw = function(c, value) {
+    c.save();
+    c.fillStyle = "white";
+    c.font = this.pt + "pt Arial";
+    c.textAlign = this.align;
+    c.fillText(
+        this.label + value.toFixed(this. digits),
+        this.x, this.y + this.pt - 1
+    );
+    c.restore();
+}

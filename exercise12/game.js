@@ -23,6 +23,15 @@ var AsteroidsGame = function (id) {
     this.health_indicator = new Indicator("health", 5, 5, 100, 10);
     this.mass_destroyed = 500;
     this.score = 0;
+    this.score_indicator = new NumberIndicator("score",
+        this.canvas.width - 10, 5
+    );
+    this.fps_indicator = new NumberIndicator("fps",
+        this.canvas.width - 10,
+        this.canvas.height - 15, {
+            digits: 2
+        }
+    );
 }
 
 AsteroidsGame.prototype.moving_asteroid = function (elapsed) {
@@ -64,7 +73,7 @@ AsteroidsGame.prototype.split_asteroid = function (asteroid, elapsed) {
     }, this);
 }
 
-Asteroid.prototype.child = function(mass) {
+Asteroid.prototype.child = function (mass) {
     return new Asteroid(
         mass,
         this.x, this.y,
@@ -72,6 +81,8 @@ Asteroid.prototype.child = function(mass) {
         this.rotation_speed
     )
 }
+
+
 
 
 AsteroidsGame.prototype.keyDown = function (e) {
@@ -118,6 +129,7 @@ AsteroidsGame.prototype.key_handler = function (e, value) {
 AsteroidsGame.prototype.frame = function (timestamp) {
     if (!this.previous) this.previous = timestamp;
     var elapsed = timestamp - this.previous;
+    this.fps = 1000 / elapsed;
     this.update(elapsed / 1000);
     this.draw();
     this.previous = timestamp;
@@ -158,7 +170,11 @@ AsteroidsGame.prototype.draw = function () {
         draw_grid(this.c);
         this.asteroids.forEach(function (asteroid) {
             draw_line(this.c, asteroid, this.ship);
+            this.projectiles.forEach(function (p) {
+                draw_line(this.c, asteroid, p);
+            }, this);
         }, this);
+        this.fps_indicator.draw(this.c, this.fps);
     }
     this.asteroids.forEach(function (asteroid) {
         asteroid.draw(this.c, this.guide);
@@ -168,4 +184,5 @@ AsteroidsGame.prototype.draw = function () {
         p.draw(this.c);
     }, this);
     this.health_indicator.draw(this.c, this.ship.health, this.ship.max_health);
+    this.score_indicator.draw(this.c, this.score);
 }

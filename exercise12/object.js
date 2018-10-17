@@ -122,7 +122,7 @@ Ship.prototype.draw = function (c, guide) {
     c.save();
     c.translate(this.x, this.y);
     c.rotate(this.angle);
-    if(guide && this.compromised) {
+    if (guide && this.compromised) {
         c.save();
         c.fillStyle = "red";
         c.beginPath();
@@ -141,19 +141,19 @@ Ship.prototype.update = function (elapsed, c) {
     this.push(this.angle, this.thruster_on * this.thruster_power, elapsed);
     //this.twist((this.right_thruster - this.left_thruster) * this.steering_power, elapsed);
 
-    this.rotation_speed = (this.right_thruster - this.left_thruster) * this.steering_power / 25;    
+    this.rotation_speed = (this.right_thruster - this.left_thruster) * this.steering_power / 25;
 
     if (!this.thruster_on) {
         if (Math.abs(this.x_speed) > 0) this.x_speed = this.x_speed * 0.99;
         if (Math.abs(this.y_speed) > 0) this.y_speed = this.y_speed * 0.99;
     }
-  
+
     Mass.prototype.update.apply(this, arguments);
-    this.loaded =  this.time_until_reloaded === 0;
-    if(!this.loaded) {
+    this.loaded = this.time_until_reloaded === 0;
+    if (!this.loaded) {
         this.time_until_reloaded -= Math.min(elapsed, this.time_until_reloaded);
     }
-    if(this.compromised) {
+    if (this.compromised) {
         this.health -= Math.min(elapsed, this.health)
     }
     Mass.prototype.update.apply(this, arguments)
@@ -237,7 +237,7 @@ function Indicator(label, x, y, width, height) {
     this.height = height;
 }
 
-Indicator.prototype.draw = function(c, max, level) {
+Indicator.prototype.draw = function (c, max, level) {
     c.save();
     c.strokeStyle = "white";
     c.fillStyle = "white";
@@ -263,14 +263,35 @@ function NumberIndicator(label, x, y, options) {
     this.align = options.align || 'end';
 }
 
-NumberIndicator.prototype.draw = function(c, value) {
+NumberIndicator.prototype.draw = function (c, value) {
     c.save();
     c.fillStyle = "white";
     c.font = this.pt + "pt Arial";
     c.textAlign = this.align;
     c.fillText(
-        this.label + value.toFixed(this. digits),
+        this.label + value.toFixed(this.digits),
         this.x, this.y + this.pt - 1
     );
+    c.restore();
+}
+
+function Message(x, y, options) {
+    options = options || {};
+    this.x = x;
+    this.y = y;
+    this.main_pt = options.main_pt || 28;
+    this.sub_pt = options.sub_pt || 18;
+    this.fill = options.fill || "white";
+    this.textAlign = options.align || 'center';
+}
+
+Message.prototype.draw = function (c, main, sub) {
+    c.save();
+    c.fillStyle = this.fill;
+    c.textAlign = this.textAlign;
+    c.font = this.main_pt + "pt Arial";
+    c.fillText(main, this.x, this.y);
+    c.font = this.sub_pt + "pt Arial";
+    c.fillText(sub, this.x, this.y + this.main_pt);
     c.restore();
 }
